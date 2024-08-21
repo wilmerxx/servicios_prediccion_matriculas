@@ -1,5 +1,5 @@
 from app import create_app
-
+import os
 
 def main():
     # Crear la instancia de la aplicacións
