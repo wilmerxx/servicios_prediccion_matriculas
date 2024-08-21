@@ -1,6 +1,6 @@
 import pymysql
 from flask import jsonify
-
+from db_config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
 def connect_db():
     """
@@ -9,13 +9,12 @@ def connect_db():
     Returns:
     conn (pymysql.connections.Connection): Objeto de conexión a la base de datos.
     """
-
     try:
         conn = pymysql.connect(
-            host='localhost',
-            user='wilmer',
-            password='12345',
-            db='db_matriculas'
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            db=DB_NAME
         )
         return conn
     except Exception as e:
