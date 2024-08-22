@@ -1,21 +1,43 @@
 import pymysql
 from flask import jsonify
-from db_config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+
+import os
+from dotenv import load_dotenv
+from sqlalchemy.engine.url import make_url
+import pymysql
+
+# Cargar variables de entorno desde el archivo .env si está en entorno local
+ENV = os.getenv('ENV', 'local')
+if ENV == 'local':
+    load_dotenv()
+
+# Obtener la URL de conexión de la base de datos desde las variables de entorno
+DB_URL = os.getenv('MYSQL_URL')
+
+if not DB_URL:
+    raise Exception("No se encontró la URL de MySQL en las variables de entorno.")
+
 
 def connect_db():
     """
-    Establece una conexión a la base de datos MySQL.
+    Establece una conexión a la base de datos MySQL utilizando la URL de conexión.
 
     Returns:
     conn (pymysql.connections.Connection): Objeto de conexión a la base de datos.
     """
     try:
+        # Parsear la URL para extraer los componentes de conexión
+        url = make_url(DB_URL)
+
+        # Establecer la conexión utilizando los componentes extraídos
         conn = pymysql.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            db=DB_NAME
+            host=url.host,
+            user=url.username,
+            password=url.password,
+            db=url.database,
+            port=url.port or 3306
         )
+
         return conn
     except Exception as e:
         raise Exception(f"Error al conectar a la base de datos: {e}")
