@@ -80,9 +80,20 @@ class PrediccionService:
         x_encoded = self.preparacion_de_datos.codificar_categoricas_predict(df_periodos_actules_predict, features, target, encoded_features)
 
         logging.debug(f"Prediciendo matriculas con el archivo {archivo}")
-        logging.debug(f"dataset preparado para prediccion {x_encoded}")
+        logging.debug(f"dataset codificado {x_encoded}")
         logging.debug(f"dataset preparado para prediccion {df_periodos_actules_predict}")
         return x_encoded, df_periodos_actules_predict
+
+    def verificarExistePerido(self,df):
+        try:
+            anio_fin = df['ANIO_FIN'].iloc[0]  # Ensure correct extraction of ANIO_FIN
+            logging.debug(f"Verificando si existe el periodo {anio_fin}")
+            if self.preparacion_de_datos.existePerido(anio_fin):
+                return True
+            return False
+        except Exception as e:
+            logging.error(f"Error al verificar si existe el periodo: {e}")
+            return False
 
     def predirMatriculas(self, archivo):
         x_encoded, df = self.verificacionDePreparacion(archivo)

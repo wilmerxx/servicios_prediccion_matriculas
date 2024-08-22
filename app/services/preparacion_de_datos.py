@@ -488,3 +488,18 @@ class PreparacionDeDatos:
                 return predicciones
         finally:
             conn.close()
+
+    def existePerido(self, periodo):
+        # Conectar a la base de datos
+        conn = connect_db()
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    SELECT * FROM predicciones WHERE ANIO_FIN = %s
+                """, (periodo,))
+                result = cursor.fetchone()
+                if result:
+                    return True
+                return False
+        finally:
+            conn.close()

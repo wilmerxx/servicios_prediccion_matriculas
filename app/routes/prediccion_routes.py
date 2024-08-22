@@ -26,10 +26,22 @@ prediccion_service = PrediccionService()
 @jwt_required()
 def verificacionDePreparacion():
     archivo = request.files["archivo"]
-    logging.debug(f"Prediciendo matriculas con el archivo {request.files}")
-    if prediccion_service.verificacionDePreparacion(archivo):
-        return jsonify(success=True)
-    return jsonify(success=False), 400
+    try:
+        x, df = prediccion_service.verificacionDePreparacion(archivo)
+        logging.debug(f"El archivo es apto para predecir: {x}")
+        if x is not None:
+            if prediccion_service.verificarExistePerido(df):
+                logging.debug("El periodo ya existe")
+                return jsonify({"message": "El periodo ya existe", "status": "exists"}), 200
+            logging.debug("El archivo es apto para predecir")
+            return jsonify({"message": "El archivo es apto para predecir", "status": "ready"}), 200
+        else:
+            logging.debug("El archivo no es apto para predecir")
+            return jsonify({"message": "El archivo no es apto para predecir", "status": "invalid"}), 400
+    except Exception as e:
+        logging.error(f"Error al verificar la preparacion del archivo: {e}")
+        return jsonify({"message": "Error el archivo no es cumple con los parametros", "status": "error"}), 400
+
 
 @predicciones_blueprint.route("/predicirMatricula", methods=["POST"])
 @jwt_required()
