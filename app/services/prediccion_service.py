@@ -79,9 +79,6 @@ class PrediccionService:
         # Crear una función para dividir el conjunto de datos en conjuntos de entrenamiento y prueba
         x_encoded = self.preparacion_de_datos.codificar_categoricas_predict(df_periodos_actules_predict, features, target, encoded_features)
 
-        logging.debug(f"Prediciendo matriculas con el archivo {archivo}")
-        logging.debug(f"dataset codificado {x_encoded}")
-        logging.debug(f"dataset preparado para prediccion {df_periodos_actules_predict}")
         return x_encoded, df_periodos_actules_predict
 
     def verificarExistePerido(self,df):
@@ -107,7 +104,13 @@ class PrediccionService:
         return df_predictivo
 
     def guardarPrediccion(self, df_predictivo):
-        # guardar prediccion
+        # Verificar si el periodo existe
+        if self.verificarExistePerido(df_predictivo):
+            # Eliminar predicciones existentes para el periodo
+            anio_fin = df_predictivo['ANIO_FIN'].iloc[0]
+            self.preparacion_de_datos.eliminarPredicciones(anio_fin)
+
+        # Guardar prediccion
         self.preparacion_de_datos.guardar_datos_predichos(df_predictivo)
         return "Prediccion realizada y guardada exitosamente."
 

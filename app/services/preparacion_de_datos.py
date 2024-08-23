@@ -503,3 +503,16 @@ class PreparacionDeDatos:
                 return False
         finally:
             conn.close()
+
+    @staticmethod
+    def eliminarPredicciones(anio_fin):
+        # Conectar a la base de datos
+        conn = connect_db()
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    DELETE FROM predicciones WHERE ANIO_FIN = %s
+                """, (anio_fin,))
+                conn.commit()
+        finally:
+            conn.close()

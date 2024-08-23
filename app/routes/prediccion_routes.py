@@ -28,7 +28,6 @@ def verificacionDePreparacion():
     archivo = request.files["archivo"]
     try:
         x, df = prediccion_service.verificacionDePreparacion(archivo)
-        logging.debug(f"El archivo es apto para predecir: {x}")
         if x is not None:
             if prediccion_service.verificarExistePerido(df):
                 logging.debug("El periodo ya existe")
@@ -47,8 +46,6 @@ def verificacionDePreparacion():
 @jwt_required()
 def predirMatriculas():
     archivo = request.files["archivo"]
-    print(request.files)
-    logging.info(f"Prediciendo matriculas con el archivo {request.files}")
     df_prediccion = prediccion_service.predirMatriculas(archivo)
     if prediccion_service.guardarPrediccion(df_prediccion):
         return jsonify(success=True)
