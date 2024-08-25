@@ -57,6 +57,7 @@ def update_usuario(id):
     nuevo_email = data.get('email')
     nuevo_password = data.get('password')
     nuevo_rol_id = data.get('rol_id')
+    logging.info(f"nuevo_username: {nuevo_username}")
     result = usuario_service.update_usuario(id, nuevo_username,nuevo_email,nuevo_nombre, nuevo_apellido, nuevo_password, nuevo_rol_id)
     return jsonify({"message": result}), 200
 
