@@ -1,1 +1,1 @@
-web: gunicorn -w 1 -b 0.0.0.0:8000 app:create_app
+web: uwsgi --http :8000 --wsgi-file app.py --callable create_app --processes 1 --threads 2
