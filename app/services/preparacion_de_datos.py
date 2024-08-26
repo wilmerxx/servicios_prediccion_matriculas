@@ -264,9 +264,6 @@ class PreparacionDeDatos:
         # Transforma la columna 'PERIODO' usando el codificador
         df_indicadores['PERIODO_CODIFICADO'] = le.transform(df_indicadores['PERIODO'])
 
-        # Muestra el resultado
-        print(df_indicadores[['PERIODO', 'PERIODO_CODIFICADO']])
-
         return df_indicadores
 
     @staticmethod

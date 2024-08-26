@@ -38,7 +38,6 @@ def verificacionDePreparacion():
             logging.debug("El archivo no es apto para predecir")
             return jsonify({"message": "El archivo no es apto para predecir", "status": "invalid"}), 400
     except Exception as e:
-        logging.error(f"Error al verificar la preparacion del archivo: {e}")
         return jsonify({"message": "Error el archivo no es cumple con los parametros", "status": "error"}), 400
 
 
@@ -55,5 +54,5 @@ def predirMatriculas():
 def getPredicciones():
     logging.info("Obteniendo predicciones")
     predicciones = prediccion_service.getPredicciones()
-    logging.debug(f"Predicciones obtenidas: {predicciones}")
+    logging.debug(f"Predicciones obtenidas")
     return jsonify(predicciones)

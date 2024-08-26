@@ -1,66 +1,59 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class Provincia:
-    def __init__(self, codigo_provincia, nombre_provincia):
-        self.codigo_provincia = codigo_provincia
-        self.nombre_provincia = nombre_provincia
+
+class Ubicacion:
+    """Clase base para representaciones geográficas como Provincia, Canton y Parroquia."""
+    def __init__(self, codigo, nombre):
+        self.codigo = codigo
+        self.nombre = nombre
 
     def __repr__(self):
-        return f"<Provincia(codigo_provincia={self.codigo_provincia}, nombre_provincia={self.nombre_provincia})>"
+        return f"<{self.__class__.__name__}(codigo={self.codigo}, nombre={self.nombre})>"
 
     def to_dict(self):
         return {
-            'codigo_provincia': self.codigo_provincia,
-            'nombre_provincia': self.nombre_provincia
+            'codigo': self.codigo,
+            'nombre': self.nombre
         }
 
-class Canton:
-    def __init__(self, codigo_canton, nombre_canton):
-        self.codigo_canton = codigo_canton
-        self.nombre_canton = nombre_canton
 
-    def __repr__(self):
-        return f"<Canton(codigo_canton={self.codigo_canton}, nombre_canton={self.nombre_canton})>"
+class Provincia(Ubicacion):
+    pass
 
-    def to_dict(self):
-        return {
-            'codigo_canton': self.codigo_canton,
-            'nombre_canton': self.nombre_canton
-        }
 
-class Parroquia:
-    def __init__(self, codigo_parroquia, nombre_parroquia):
-        self.codigo_parroquia = codigo_parroquia
-        self.nombre_parroquia = nombre_parroquia
+class Canton(Ubicacion):
+    pass
 
-    def __repr__(self):
-        return f"<Parroquia(codigo_parroquia={self.codigo_parroquia}, nombre_parroquia={self.nombre_parroquia})>"
 
-    def to_dict(self):
-        return {
-            'codigo_parroquia': self.codigo_parroquia,
-            'nombre_parroquia': self.nombre_parroquia
-        }
+class Parroquia(Ubicacion):
+    pass
 
 
 class Usuario:
+    """Clase que representa un usuario en el sistema."""
     def __init__(self, id, username, email, nombre, apellido, password, rol_id):
         self.id = id
         self.username = username
         self.email = email
         self.nombre = nombre
         self.apellido = apellido
-        self.password = password
+        self._password = generate_password_hash(password)
         self.rol_id = rol_id
 
     def __repr__(self):
-        return f"<Usuario(id={self.id}, username={self.username}, email={self.email}, nombre={self.nombre}, apellido={self.apellido}, password={self.password}, rol_id={self.rol_id})>"
+        return f"<Usuario(id={self.id}, username={self.username}, email={self.email}, " \
+               f"nombre={self.nombre}, apellido={self.apellido}, rol_id={self.rol_id})>"
 
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
+    @property
+    def password(self):
+        raise AttributeError("La contraseña no es accesible directamente.")
+
+    @password.setter
+    def password(self, password):
+        self._password = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return check_password_hash(self._password, password)
 
     def to_dict(self):
         return {
@@ -72,8 +65,8 @@ class Usuario:
             'rol_id': self.rol_id
         }
 
-
 class Prediccion:
+    """Clase que representa una predicción de matrícula y datos asociados."""
     def __init__(self, id, periodo, zona, codprovincia, nombre_provincia, codcanton, nombre_canton,
                  codparroquia, nombre_parroquia, amie, tipoeducacion, niveleducacion, area,
                  regimenescolar, modalidad, jornada, docentesfemenino, docentesmasculino, totaldocentes,
@@ -163,5 +156,3 @@ class Prediccion:
             'PROPORCION_NOACTUALIZADOS': self.proporcion_noactualizados,
             'PROPORCION_NOPROMOVIDOS': self.proporcion_nopromovidos
         }
-
-

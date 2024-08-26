@@ -43,7 +43,6 @@ class ConfiguracionService:
                     """
                 cursor.execute(sql, (paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical, usuario_id))
                 conn.commit()
-                logging.debug(f"Configuración actualizada para usuario_id: {usuario_id}")
                 return "Configuración actualizada exitosamente."
             else:
                 sql = """

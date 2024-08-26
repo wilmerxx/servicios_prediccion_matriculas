@@ -25,7 +25,6 @@ class PrediccionService:
 
         # lectura del archivo
         df = self.preparacion_de_datos.leer_archivo(archivo)
-        logging.debug(f"Archivo leido {df}")
 
         # formateo de titulos
         df = self.preparacion_de_datos.formaterTitulo(df)
@@ -84,7 +83,6 @@ class PrediccionService:
     def verificarExistePerido(self,df):
         try:
             anio_fin = df['ANIO_FIN'].iloc[0]  # Ensure correct extraction of ANIO_FIN
-            logging.debug(f"Verificando si existe el periodo {anio_fin}")
             if self.preparacion_de_datos.existePerido(anio_fin):
                 return True
             return False

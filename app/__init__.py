@@ -5,11 +5,12 @@ from app.models.connect import create_tables_if_not_exist
 from flask_cors import CORS
 import logging
 from datetime import timedelta
-
+import os
 from werkzeug.utils import secure_filename
 
 
 def create_app():
+    global os
     app = Flask(__name__)
     CORS(app) # Habilitar CORS
 
@@ -25,7 +26,7 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
 
     # Configuración para servir archivos estáticos
-    app.config['STATIC_FOLDER'] = 'uploads'
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 
     # Asegúrate de que la carpeta de uploads exista
     import os
