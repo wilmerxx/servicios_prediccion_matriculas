@@ -28,7 +28,8 @@ class ConfiguracionService:
             return file_path
         return None
 
-    def update_configuracion(self, usuario_id, paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical):
+    def update_configuracion(self, usuario_id, paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal,
+                             logo_vertical):
         conn = connect_db()
         try:
             cursor = conn.cursor()
@@ -36,12 +37,25 @@ class ConfiguracionService:
             count = cursor.fetchone()[0]
 
             if count > 0:
+                # Construir la consulta SQL dinámicamente según la presencia de las rutas de los logos
                 sql = """
                         UPDATE configuraciones_usuario
-                        SET paleta_colores = %s, nombre_aplicacion = %s, tipo_fuente = %s, logo_horizontal = %s, logo_vertical = %s
-                        WHERE usuario_id = %s
+                        SET paleta_colores = %s, nombre_aplicacion = %s, tipo_fuente = %s
                     """
-                cursor.execute(sql, (paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical, usuario_id))
+                params = [paleta_colores, nombre_aplicacion, tipo_fuente]
+
+                if logo_horizontal is not None:
+                    sql += ", logo_horizontal = %s"
+                    params.append(logo_horizontal)
+
+                if logo_vertical is not None:
+                    sql += ", logo_vertical = %s"
+                    params.append(logo_vertical)
+
+                sql += " WHERE usuario_id = %s"
+                params.append(usuario_id)
+
+                cursor.execute(sql, tuple(params))
                 conn.commit()
                 return "Configuración actualizada exitosamente."
             else:
@@ -49,7 +63,8 @@ class ConfiguracionService:
                         INSERT INTO configuraciones_usuario (usuario_id, paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical)
                         VALUES (%s, %s, %s, %s, %s, %s)
                     """
-                cursor.execute(sql, (usuario_id, paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical))
+                cursor.execute(sql, (
+                usuario_id, paleta_colores, nombre_aplicacion, tipo_fuente, logo_horizontal, logo_vertical))
                 conn.commit()
                 logging.debug(f"Configuración creada para usuario_id: {usuario_id}")
                 return "Configuración creada exitosamente."
