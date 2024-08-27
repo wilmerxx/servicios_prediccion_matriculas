@@ -114,3 +114,6 @@ class PrediccionService:
 
     def getPredicciones(self):
         return self.preparacion_de_datos.obtener_predicciones()
+
+    def getPrediccionesAgrupadas(self):
+        return self.preparacion_de_datos.obtener_predicciones_agrupadas()

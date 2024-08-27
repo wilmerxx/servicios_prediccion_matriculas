@@ -156,3 +156,38 @@ class Prediccion:
             'PROPORCION_NOACTUALIZADOS': self.proporcion_noactualizados,
             'PROPORCION_NOPROMOVIDOS': self.proporcion_nopromovidos
         }
+
+
+class Predicion_agrupada:
+    def __init__(self, codcanton, nombre_canton, codprovincia, nombre_provincia, codparroquia, nombre_parroquia, zona, regimenescolar, total_promovidos, total_no_promovidos, total_estudiantes, total_desertores, total_prediccion):
+        self.codcanton = codcanton
+        self.nombre_canton = nombre_canton
+        self.codprovincia = codprovincia
+        self.nombre_provincia = nombre_provincia
+        self.codparroquia = codparroquia
+        self.nombre_parroquia = nombre_parroquia
+        self.zona = zona
+        self.regimenescolar = regimenescolar
+        self.total_promovidos = total_promovidos
+        self.total_no_promovidos = total_no_promovidos
+        self.total_estudiantes = total_estudiantes
+        self.total_desertores = total_desertores
+        self.total_prediccion = total_prediccion
+
+    def to_dict(self):
+        return {
+            'CODCANTON': self.codcanton,
+            'NOMBRE_CANTON': self.nombre_canton,
+            'CODPROVINCIA': self.codprovincia,
+            'NOMBRE_PROVINCIA': self.nombre_provincia,
+            'CODPARROQUIA': self.codparroquia,
+            'NOMBRE_PARROQUIA': self.nombre_parroquia,
+            'ZONA': self.zona,
+            'REGIMENESCOLAR': self.regimenescolar,
+            'TOTAL_PROMOVIDOSTERCERANOBACH': self.total_promovidos,
+            'TOTAL_NOPROMOVIDOSTERCERANOBACH': self.total_no_promovidos,
+            'TOTAL_ESTUDIANTESTERCERANOBACH': self.total_estudiantes,
+            'TOTAL_DESERTORESTERCERANOBACH': self.total_desertores,
+            'TOTAL_PREDICCION': self.total_prediccion
+        }
+

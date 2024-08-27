@@ -56,3 +56,11 @@ def getPredicciones():
     predicciones = prediccion_service.getPredicciones()
     logging.debug(f"Predicciones obtenidas")
     return jsonify(predicciones)
+
+
+@predicciones_blueprint.route("/agrupadas", methods=["GET"])
+def getPrediccionesAgrupadas():
+    logging.info("Obteniendo predicciones agrupadas")
+    predicciones = prediccion_service.getPrediccionesAgrupadas()
+    logging.debug(f"Predicciones agrupadas obtenidas")
+    return jsonify(predicciones)

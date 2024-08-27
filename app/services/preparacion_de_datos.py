@@ -15,7 +15,7 @@ import unicodedata
 from app.models.connect import connect_db
 import category_encoders as ce
 import joblib
-from app.models.modelo import Prediccion
+from app.models.modelo import Prediccion, Predicion_agrupada
 
 
 class PreparacionDeDatos:
@@ -485,6 +485,31 @@ class PreparacionDeDatos:
                 return predicciones
         finally:
             conn.close()
+
+    def obtener_predicciones_agrupadas(self):
+        # Conectar a la base de datos
+        conn = connect_db()
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    SELECT * FROM vista_tabla
+                """)
+                result = cursor.fetchall()
+                predicciones_agrupada = []
+                for prediccionAgrupada in result:
+                    prediccion_obj = Predicion_agrupada(
+                        prediccionAgrupada[0], prediccionAgrupada[1], prediccionAgrupada[2], prediccionAgrupada[3],
+                        prediccionAgrupada[4],
+                        prediccionAgrupada[5], prediccionAgrupada[6], prediccionAgrupada[7], prediccionAgrupada[8],
+                        prediccionAgrupada[9],
+                        prediccionAgrupada[10], prediccionAgrupada[11], prediccionAgrupada[12]
+                    )
+                    predicciones_agrupada.append(prediccion_obj.to_dict())
+                return predicciones_agrupada
+        finally:
+            conn.close()
+
+
 
     def existePerido(self, periodo):
         # Conectar a la base de datos
