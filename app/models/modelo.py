@@ -31,7 +31,7 @@ class Parroquia(Ubicacion):
 
 class Usuario:
     """Clase que representa un usuario en el sistema."""
-    def __init__(self, id, username, email, nombre, apellido, password, rol_id):
+    def __init__(self, id, username, email, nombre, apellido, password, rol_id, imagen=None):
         self.id = id
         self.username = username
         self.email = email
@@ -39,10 +39,11 @@ class Usuario:
         self.apellido = apellido
         self._password = generate_password_hash(password)
         self.rol_id = rol_id
+        self.imagen = imagen
 
     def __repr__(self):
         return f"<Usuario(id={self.id}, username={self.username}, email={self.email}, " \
-               f"nombre={self.nombre}, apellido={self.apellido}, rol_id={self.rol_id})>"
+               f"nombre={self.nombre}, apellido={self.apellido}, rol_id={self.rol_id}, imagen={self.imagen})>"
 
     @property
     def password(self):
@@ -62,7 +63,8 @@ class Usuario:
             'email': self.email,
             'nombre': self.nombre,
             'apellido': self.apellido,
-            'rol_id': self.rol_id
+            'rol_id': self.rol_id,
+            'imagen': self.imagen
         }
 
 class Prediccion:

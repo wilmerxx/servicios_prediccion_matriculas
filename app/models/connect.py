@@ -83,7 +83,7 @@ def create_tables_if_not_exist():
                        """)
             conn.commit()
 
-            # Crear tabla usuarios
+         # Crear tabla usuarios
             cursor.execute("""
                             CREATE TABLE IF NOT EXISTS usuarios (
                                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -93,6 +93,7 @@ def create_tables_if_not_exist():
                                 apellido VARCHAR(100),
                                 password VARCHAR(255) NOT NULL,
                                 rol_id INT,
+                                imagen VARCHAR(255),
                                 FOREIGN KEY (rol_id) REFERENCES roles(id)
                             )
                         """)

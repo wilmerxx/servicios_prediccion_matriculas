@@ -14,7 +14,8 @@ def extract_data(*keys):
 @auth_blueprint.route('/register', methods=['POST'])
 def register():
     required_fields = ['username', 'email', 'nombre', 'apellido', 'password', 'rol_id']
-    data = extract_data(*required_fields)
+    optional_fields = ['imagen']
+    data = extract_data(*required_fields, *optional_fields)
     result = auth_service.register(**data)
     return jsonify({"message": result}), 201
 

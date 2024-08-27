@@ -6,7 +6,7 @@ from app.models.modelo import Usuario
 
 class AuthService:
     @staticmethod
-    def register(username, email, nombre, apellido, password, rol_id):
+    def register(username, email, nombre, apellido, password, rol_id, imagen=None):
         conn = connect_db()
         try:
             with conn.cursor() as cursor:
@@ -18,8 +18,12 @@ class AuthService:
 
                 # Registrar el usuario
                 hashed_password = generate_password_hash(password)
-                sql = "INSERT INTO usuarios (username, email, nombre, apellido, password, rol_id) VALUES (%s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (username, email, nombre, apellido, hashed_password, rol_id))
+                if imagen:
+                    sql = "INSERT INTO usuarios (username, email, nombre, apellido, password, rol_id, imagen) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute(sql, (username, email, nombre, apellido, hashed_password, rol_id, imagen))
+                else:
+                    sql = "INSERT INTO usuarios (username, email, nombre, apellido, password, rol_id) VALUES (%s, %s, %s, %s, %s, %s)"
+                    cursor.execute(sql, (username, email, nombre, apellido, hashed_password, rol_id))
                 conn.commit()
                 return "Usuario registrado exitosamente."
         except Exception as e:
